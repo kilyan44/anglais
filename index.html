@@ -213,7 +213,7 @@ function tkChk(){var e=document.getElementById("tkin");if(e)tk.heard=e.value;tk.
 if(!tk.heard.trim()){tk.msg="Dis ou écris quelque chose d’abord.";render();return}
 tk.res=okSay(tk.heard,tk.x[0]);if(tk.res){K["v"+tk.x[0]]=true;save()}render()}
 function tkRec(){tk.res=null;tk.msg="";tk.heard="";
-var m=mic(function(t){tk.heard=t;var e=document.getElementById("tkin");if(e)e.value=t},function(){tk.live=false;if(merr){tk.msg=merr;render()}else tkChk()},false);
+var m=mic(function(t){tk.heard=t;var e=document.getElementById("tkin");if(e)e.value=t},function(){tk.live=false;var e=document.getElementById("tkin");if(e)tk.heard=e.value;if(merr)tk.msg=merr;else if(tk.heard.trim())tk.msg="Transcription terminée : vérifie le texte, puis appuie sur « Valider ».";else tk.msg="Aucun texte reconnu. Réessaie en parlant après le bip.";render()},false);
 if(m)tk.msg=m;else tk.live=true;render()}
 function talkQ(n){return '<div class="rec"><div class="row" style="margin:0 0 8px"><button class="pri" id="mb'+n+'" onclick="qRec('+n+')">🎤 Dire ma réponse</button><button onclick="qHint('+n+')">💡 Indice</button></div><div id="qh'+n+'"></div><textarea id="qx'+n+'" rows="3" class="in" placeholder="Ta réponse en anglais : parle ou écris"></textarea><div class="row"><button onclick="qChk('+n+')">Analyser ma réponse</button></div><div id="qo'+n+'"></div></div>'}
 function qmsg(n,m){document.getElementById("qo"+n).innerHTML=m?'<p class="small">'+esc(m)+'</p>':""}
