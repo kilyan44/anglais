@@ -18,6 +18,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-app
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:12px 16px 8px}
 h1{font:700 19px/1.2 Georgia,"Times New Roman",serif;margin:0 0 10px}
+.brand{display:flex;align-items:center;gap:12px;margin:0 0 12px}.avatar{width:54px;height:54px;flex:0 0 54px;border-radius:16px;border:1.5px solid var(--line);background:var(--card)}.brand-copy{min-width:0}.brand h1{margin:0 0 4px}.brand .small{margin:0}
 .tabs{display:flex;gap:6px;background:var(--line);padding:4px;border-radius:14px}
 .tabs button{flex:1}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;border-radius:10px;padding:9px 12px;min-height:44px}
@@ -69,7 +70,7 @@ details.mod{background:var(--soft);border:0;padding:0 12px}
 </head>
 <body>
 <header>
-<h1>Oral IA : What is Artificial Intelligence Exactly?</h1>
+<div class="brand"><svg class="avatar" viewBox="0 0 96 96" role="img" aria-label="Avatar pour apprendre l’anglais" xmlns="http://www.w3.org/2000/svg"><rect width="96" height="96" rx="18" fill="#dce8ff"/><path d="M0 18L96 72M0 42L78 96M18 0L96 48" stroke="#c8102e" stroke-width="9" opacity=".85"/><path d="M0 0L96 96M96 0L0 96" stroke="#fff" stroke-width="15"/><path d="M0 0L96 96M96 0L0 96" stroke="#244477" stroke-width="7"/><path d="M0 48H96M48 0V96" stroke="#fff" stroke-width="19"/><path d="M0 48H96M48 0V96" stroke="#c8102e" stroke-width="10"/><circle cx="48" cy="42" r="22" fill="#f1c7a5" stroke="#233449" stroke-width="2"/><path d="M26 40Q25 14 49 18Q72 17 70 42L64 31Q47 26 32 34Z" fill="#243447"/><path d="M23 38Q18 45 25 53M73 38Q78 45 71 53" fill="none" stroke="#243447" stroke-width="5"/><path d="M18 92Q20 61 48 61Q76 61 78 92" fill="#20344a"/><path d="M39 64L48 75L57 64" fill="#fff"/><path d="M42 43h1M54 43h1" stroke="#243447" stroke-width="4" stroke-linecap="round"/><path d="M42 52Q48 57 54 52" fill="none" stroke="#9d4b47" stroke-width="2.5" stroke-linecap="round"/></svg><div class="brand-copy"><h1>Oral IA : What is Artificial Intelligence Exactly?</h1><p class="small">English practice · vocabulaire & oral</p></div></div>
 <div class="tabs" role="tablist"><button id="t-vocab" onclick="setMode('vocab')">Vocabulaire</button><button id="t-video" onclick="setMode('video')">Apprendre la vidéo</button></div>
 </header>
 <main id="app"></main>
@@ -179,10 +180,10 @@ if(hj.indexOf(t.join(""))>=0)return true;
 return t.every(function(w){return h.some(function(x){return same(x,w)})})})}
 function mic(on,done,cont){merr="";if(!SR)return "Reconnaissance vocale indisponible ici. Écris ta réponse (le micro de ton clavier marche aussi).";
 try{if(rc)rc.stop()}catch(e){}
-rc=new SR();rc.lang="en-US";rc.interimResults=true;rc.continuous=!!cont;
-rc.onresult=function(e){var t="";for(var k=0;k<e.results.length;k++)t+=e.results[k][0].transcript+" ";on(t.trim())};
-rc.onerror=function(e){merr=(e.error=="not-allowed"||e.error=="service-not-allowed")?"Micro non autorisé ici. Écris ta réponse (le micro de ton clavier marche aussi).":"Je n’ai rien entendu, réessaie."};
-rc.onend=function(){done()};
+var finalText="";rc=new SR();rc.lang="en-US";rc.interimResults=true;rc.continuous=!!cont;rc.maxAlternatives=3;
+rc.onresult=function(e){var interim="";for(var k=e.resultIndex;k<e.results.length;k++){var part=e.results[k][0].transcript.trim();if(e.results[k].isFinal){if(part&&finalText.indexOf(part)<0)finalText+=(finalText?" ":"")+part}else if(part)interim+=(interim?" ":"")+part}on((finalText+(interim?" "+interim:"")).trim())};
+rc.onerror=function(e){if(e.error=="not-allowed"||e.error=="service-not-allowed")merr="Micro non autorisé. Vérifie les permissions du navigateur, puis réessaie.";else if(e.error=="audio-capture")merr="Aucun micro détecté. Vérifie ton micro ou utilise la saisie au clavier.";else if(e.error=="no-speech")merr="Aucune parole détectée. Parle un peu plus fort et réessaie.";else if(e.error=="network")merr="La reconnaissance vocale a un problème de réseau. Réessaie ou écris ta réponse.";else if(e.error!="aborted")merr="Problème de reconnaissance vocale ("+e.error+"). Réessaie."};
+rc.onend=function(){if(finalText)on(finalText.trim());done()};
 try{rc.start()}catch(e){return "Micro occupé, réessaie."}return ""}
 function newT(){var L=list(),x=L[Math.floor(Math.random()*L.length)];tk={x:x,heard:"",res:null,h:0,msg:"",live:false,show:false}}
 function hintV(x,l){var t=x[0].split(/\s*[\/(]\s*/)[0].replace(/…/g,"").trim(),w=t.split(/\s+/);
