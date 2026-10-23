@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="fr" data-mode="vocab">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oral IA : vocabulaire et vidéo</title>
+<style>
+:root{--bg:#edf1f4;--card:#fff;--ink:#10202b;--mut:#5b6b77;--line:#d3dce3;--a:#0b7a75;--at:#fff;--ok:#1f8a4c;--no:#b4361f;--soft:#dff1ef;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html[data-mode=video]{--a:#4338ca;--soft:#e4e2fb}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a22;--card:#17262f;--ink:#e8eff4;--mut:#9fb0bc;--line:#2a3d49;--a:#4fc3bb;--at:#06221f;--ok:#58d08a;--no:#ff8b72;--soft:#16393a}
+html[data-mode=video]:not([data-theme="light"]){--a:#a5a0ff;--at:#12104a;--soft:#25234f}}
+:root[data-theme="dark"]{--bg:#0f1a22;--card:#17262f;--ink:#e8eff4;--mut:#9fb0bc;--line:#2a3d49;--a:#4fc3bb;--at:#06221f;--ok:#58d08a;--no:#ff8b72;--soft:#16393a}
+html[data-mode=video][data-theme="dark"]{--a:#a5a0ff;--at:#12104a;--soft:#25234f}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:12px 16px 8px}
+h1{font:700 19px/1.2 Georgia,"Times New Roman",serif;margin:0 0 10px}
+.tabs{display:flex;gap:6px;background:var(--line);padding:4px;border-radius:14px}
+.tabs button{flex:1}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;border-radius:10px;padding:9px 12px;min-height:44px}
+button:focus-visible,summary:focus-visible{outline:3px solid var(--a);outline-offset:2px}
+.tabs button.on,.pri{background:var(--a);color:var(--at);font-weight:600}
+main{max-width:640px;margin:0 auto;padding:4px 16px 32px}
+.sub{display:flex;gap:8px;margin:6px 0 10px}
+.sub button{border:1.5px solid var(--line);flex:1;font-size:15px}
+.sub button.on{border-color:var(--a);background:var(--soft);font-weight:600}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chips button{border:1.5px solid var(--line);padding:4px 12px;min-height:36px;border-radius:20px;font-size:14px}
+.chips button.on{background:var(--a);color:var(--at);border-color:var(--a)}
+.bar{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin:2px 0 12px}
+.bar i{display:block;height:100%;background:var(--a)}
+.small{color:var(--mut);font-size:14px}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:22px;padding:22px 20px;min-height:250px;display:flex;flex-direction:column;justify-content:center;gap:10px;cursor:pointer;text-align:left}
+.tag{align-self:flex-start;font-size:13px;color:var(--a);background:var(--soft);padding:2px 10px;border-radius:10px}
+.term{font:700 28px/1.2 Georgia,"Times New Roman",serif}
+.fr{font-size:22px;font-weight:600}
+.ex{font-style:italic;color:var(--mut)}
+.row{display:flex;gap:8px;margin-top:12px}
+.row button{flex:1;border:1.5px solid var(--line)}
+.row .ok{background:var(--ok);color:#fff;border-color:var(--ok);font-weight:600}
+.row .no{color:var(--no);border-color:var(--no)}
+.sp{background:var(--soft);border-radius:50%;width:44px;padding:0}
+.opt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:var(--card);margin:8px 0;padding:12px 14px;border-radius:14px}
+.opt.good{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card))}
+.opt.bad{border-color:var(--no);background:color-mix(in srgb,var(--no) 18%,var(--card))}
+details{background:var(--card);border:1.5px solid var(--line);border-radius:16px;margin:8px 0;padding:0 14px}
+details.done{border-color:var(--ok)}
+summary{cursor:pointer;padding:13px 0;font-weight:600;list-style:none}
+summary::-webkit-details-marker{display:none}
+details[open] summary{color:var(--a)}
+details p,details ul{margin:0 0 10px}
+details ul{padding-left:20px}
+details li{margin:4px 0}
+.en{font-family:Georgia,"Times New Roman",serif;font-size:17px;background:var(--soft);padding:8px 12px;border-radius:12px}
+.lab{font-weight:700;color:var(--a)}
+.in{width:100%;font:inherit;color:inherit;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
+details.mod{background:var(--soft);border:0;padding:0 12px}
+.score{font:700 28px Georgia,"Times New Roman",serif;color:var(--a);margin:10px 0 2px}
+.res{padding:10px 12px;border-radius:12px;margin:8px 0}
+.res.good{background:color-mix(in srgb,var(--ok) 18%,var(--card))}
+.res.bad{background:color-mix(in srgb,var(--no) 18%,var(--card))}
+.rec{margin-bottom:6px}
+.rs{border:1.5px solid var(--no);color:var(--no);font-size:14px;margin:0 0 10px}
+@media (prefers-reduced-motion:no-preference){.card,.opt,details{transition:border-color .15s,background .15s}}
+</style>
+</head>
+<body>
+<header>
+<h1>Oral IA : What is Artificial Intelligence Exactly?</h1>
+<div class="tabs" role="tablist"><button id="t-vocab" onclick="setMode('vocab')">Vocabulaire</button><button id="t-video" onclick="setMode('video')">Apprendre la vidéo</button></div>
+</header>
+<main id="app"></main>
+<script>
+var V=[
+["artificial intelligence (AI)","intelligence artificielle","a machine that does tasks that need human intelligence","AI can play chess and recognize faces.","v"],
+["strong AI","IA forte","a machine that really thinks like a human (it does not exist yet)","Strong AI is still science fiction.","v"],
+["weak AI (narrow AI)","IA faible (étroite)","AI that does one task well","Deep Blue is a weak AI.","v"],
+["expert system","système expert","a program with human knowledge and rules inside","An expert system follows rules written by people.","v"],
+["handcrafted rules","règles écrites à la main","rules made by people, not learned by the machine","Old AI used handcrafted rules.","v"],
+["machine learning","apprentissage automatique","the computer learns from examples","Machine learning needs a lot of data.","v"],
+["neural network","réseau de neurones","a system inspired by the brain, with many small units","A neural network can learn to see dogs.","v"],
+["node","nœud","one small unit in a neural network","Each node is like an artificial neuron.","v"],
+["algorithm","algorithme","a list of steps that a computer follows","The algorithm checks millions of moves.","v"],
+["data","données","information: numbers, texts, pictures","More data means better learning.","v"],
+["pattern recognition","reconnaissance de motifs","finding the same shapes or habits in data","Pattern recognition helps read handwriting.","v"],
+["computer vision","vision par ordinateur","a computer that can see pictures","Computer vision helps self-driving cars.","v"],
+["natural language processing (NLP)","traitement du langage naturel","a computer that understands human language","NLP is used in translation apps.","v"],
+["robotics","robotique","building machines that move in the real world","Robotics mixes AI and engineering.","v"],
+["knowledge management","gestion des connaissances","organizing information so people can use it","Expert systems use knowledge management.","v"],
+["reasoning","raisonnement","thinking step by step to find a conclusion","Reasoning is a part of intelligence.","v"],
+["problem solving","résolution de problèmes","finding an answer to a difficult question","Chess is a problem-solving task.","v"],
+["perception","perception","understanding the world with senses or sensors","Perception helps a car see the road.","v"],
+["generalization","généralisation","using what you learned in a new situation","Generalization means working on new cases.","v"],
+["to improve itself","s’améliorer tout seul","to get better without help","A learning program improves itself.","v"],
+["confidence","niveau de certitude","how sure the system is about its answer","Watson gives an answer with a confidence level.","v"],
+["general-purpose method","méthode générale","a method that works for many problems","AlphaGo uses general-purpose methods.","v"],
+["creativity","créativité","making new and original things","Creativity was just starting in 2016.","v"],
+["the Turing test","le test de Turing","a test: can a judge tell a machine from a human by talking?","Turing proposed the test in 1950.","v"],
+["to mimic","imiter, simuler","to copy how something works","The AI tries to mimic the human brain.","v"],
+["AI effect","l’effet IA","after a machine succeeds, people say it is not real AI","The AI effect makes AI hard to define.","v"],
+["brute force","force brute","trying a huge number of possibilities","Deep Blue used brute force.","v"],
+["reinforcement learning","apprentissage par renforcement","learning by trying and getting rewards","AlphaGo learned by playing against itself.","v"],
+["First, … Then, … Finally, …","D’abord… Ensuite… Enfin…","to organize your answer","First, the idea. Then, an example.","o"],
+["The main idea is…","L’idée principale est…","to start a summary","The main idea is that AI has many forms.","o"],
+["For example, …","Par exemple, …","to give an example","For example, Deep Blue plays chess.","o"],
+["It means that…","Cela veut dire que…","to explain","It means that the machine learns alone.","o"],
+["In other words, …","En d’autres termes, …","to say it again in a simpler way","In other words, it learns from examples.","o"],
+["On the one hand… on the other hand…","D’un côté… de l’autre…","to compare two things","On the one hand it is fast. On the other hand it is narrow.","o"],
+["However, …","Cependant, …","to show a contrast","However, it cannot think like a human.","o"],
+["because / so","parce que / donc","to give a reason / a result","It is weak AI because it does one task.","o"],
+["As far as I know, …","À ma connaissance, …","when you are not 100% sure","As far as I know, the video is from 2016.","o"],
+["I think that…","Je pense que…","to give your opinion","I think that AI will keep growing.","o"],
+["Could you repeat the question, please?","Pouvez-vous répéter la question ?","when you did not understand","Sorry, could you repeat the question, please?","o"],
+["Let me think for a second.","Laissez-moi réfléchir une seconde.","to get a little time","Hmm, let me think for a second.","o"],
+["What I mean is…","Ce que je veux dire, c’est…","to explain yourself better","What I mean is that it is not a human brain.","o"],
+["Similarly, … / In contrast, …","De même… / Au contraire…","to link two videos","In contrast, the other video talks about the future.","o"],
+["This video talks about…","Cette vidéo parle de…","to introduce the video","This video talks about what AI really is.","o"],
+["The speaker says that…","Le narrateur dit que…","to report the ideas","The speaker says that there are many types of AI.","o"],
+["According to the video, …","Selon la vidéo, …","to give the source","According to the video, the term AI started in 1955.","o"],
+["To sum up, …","Pour résumer, …","to finish your answer","To sum up, there are many kinds of AI.","o"]
+];
+var C=[
+["Le début : Dartmouth (1955-1956)","AI is a machine that does tasks that humans usually do with their brain. The term comes from John McCarthy.",["Le terme « IA » vient de John McCarthy (proposition de Dartmouth en 1955, atelier en 1956).","Avant, le domaine n’avait pas de nom (Alan Turing avait déjà travaillé dessus).","IA : une machine qui fait des tâches humaines et apprend à s’améliorer."]],
+["Les 7 axes de départ","The first AI plan had seven areas: brain, language, neurons, complexity, self-improvement, abstraction and creativity.",["Cerveau, langage, neurones, complexité, auto-amélioration, abstraction, hasard et créativité.","En 2016 : langage, complexité et auto-amélioration en partie réalisés.","La créativité commence : des scénarios écrits par une IA, mais sans grand sens."]],
+["Qu’est-ce que l’intelligence ?","Intelligence has five parts: learning, reasoning, problem solving, perception and language.",["Selon Jack Copeland : généralisation, raisonnement, résolution de problèmes, perception, langage.","L’intelligence a plusieurs facettes. Une IA est forte sur une seule."]],
+["Strong AI, weak AI et entre-deux","Strong AI copies the brain. Weak AI acts like a human. Watson is in the middle.",["IA forte : copier le cerveau et vraiment penser. On en est très loin.","IA faible : agit comme un humain sans expliquer le cerveau (Deep Blue : échecs, millions de coups).","Entre-deux : IBM Watson. Il lit, trouve des motifs et répond avec un pourcentage de certitude."]],
+["Machine learning et réseaux de neurones","Machine learning means the computer learns from examples. Neural networks are a part of it.",["Le programme s’améliore avec plus de données : on programme avec des exemples (photos de chiens).","Trois cercles : IA, puis machine learning, puis réseaux de neurones.","DeepMind (Google) : des nœuds comme des neurones artificiels, inspirés du cerveau."]],
+["Systèmes experts contre AlphaGo","Expert systems use human rules. AlphaGo learns by itself.",["Système expert : connaissances humaines et règles dans l’ordinateur.","AlphaGo : pas de règles écrites à la main, des méthodes générales de machine learning.","Espoir de Demis Hassabis : le climat et les maladies complexes."]],
+["Conclusion et limites","There are many AIs, and each one is good at one thing. The video is from 2016.",["Il existe beaucoup d’IA, chacune est bonne dans un seul domaine.","La vidéo date de 2016 : pas de deep learning moderne ni d’IA générative.","Piège : « Jay McCartney » dans la transcription, c’est John McCarthy."]]
+];
+var Q=[
+["What is AI according to the video?","Une machine ou un programme qui apprend à faire des tâches qui demandent l’intelligence humaine.","AI is a machine or a program that learns to do tasks that usually need human intelligence."],
+["Who created the term AI, and when?","John McCarthy, pour Dartmouth : idée écrite en 1955, rencontre à l’été 1956.","John McCarthy, for a meeting at Dartmouth College. The idea was written in 1955 and the meeting was in 1956."],
+["What are the main parts of intelligence?","Cinq : apprendre, raisonner, résoudre des problèmes, percevoir, comprendre le langage (Copeland).","There are five: learning, reasoning, problem solving, perception and understanding language."],
+["What is the difference between strong AI and weak AI?","L’IA forte veut copier le cerveau et penser. L’IA faible agit comme un humain sans expliquer le cerveau.","Strong AI wants to copy the brain and really think. Weak AI acts like a human but does not explain the brain. Deep Blue is an example."],
+["Why is Deep Blue a weak AI?","Il ne fait qu’une chose : jouer aux échecs, en vérifiant des millions de coups.","It only plays chess. It checks millions of moves, but it does not think like a human."],
+["Why is Watson “in the middle”?","Inspiré de la pensée humaine sans la copier. Il lit, trouve des motifs, répond avec un niveau de certitude.","It is inspired by human thinking, but it does not copy it. It reads a lot, finds patterns and gives an answer with a confidence level."],
+["What is machine learning? Give an example.","L’ordinateur apprend à partir de données. Exemple : beaucoup de photos de chiens, puis il reconnaît un nouveau chien.","The computer learns from data and gets better with more examples. For example, it sees many dogs and then recognizes a new one."],
+["How are AI, machine learning and neural networks connected?","Trois cercles : l’IA est le grand, le machine learning est dedans, les réseaux de neurones sont dedans.","Think of three circles. AI is the big one, machine learning is inside it, and neural networks are inside machine learning."],
+["What is an expert system? What are its problems?","Programme avec connaissances et règles humaines. Il faut écrire toutes les règles et il n’apprend pas seul.","It is a program with human knowledge and rules. But people must write all the rules, and it cannot learn alone."],
+["Why is AlphaGo different from an expert system?","Pas de règles écrites à la main : des méthodes générales de machine learning, il apprend le Go seul.","It does not use handcrafted rules. It uses general machine learning methods and learns Go by itself."],
+["Which of the seven ideas were done by 2016?","Langage, complexité, auto-amélioration (en partie). La créativité débutait.","Language, complexity and self-improvement were partly done. Creativity was just starting."],
+["What is the conclusion of the video?","Il y a beaucoup d’IA, chacune est bonne dans un seul domaine.","There are many AIs, and each one is good at one thing."],
+["Why is it hard to define AI?","L’intelligence a beaucoup de parties, et après un succès on dit « ce n’est pas la vraie IA » : l’effet IA.","Intelligence has many parts. Also, after a machine succeeds, people say it is not real AI. This is the AI effect."],
+["Is the video still up to date?","Idées principales vraies, mais vidéo de 2016. Aujourd’hui l’IA écrit et crée des images, mais pas d’IA forte.","The main ideas are true, but the video is from 2016. Today AI writes texts and makes images, but we still have no strong AI."],
+["What is the Turing test?","Un juge discute par écrit avec un humain et une machine. S’il ne distingue pas la machine, elle réussit.","A judge talks in writing with a human and a machine. If the judge cannot tell which one is the machine, it passes the test."]
+];
+var K={},mode="vocab",sub={vocab:"cards",video:"sum"},f="all",i=0,flip=false,qz=null,sc=[0,0];
+try{K=JSON.parse(localStorage.getItem("oralia")||"{}")}catch(e){}
+function save(){try{localStorage.setItem("oralia",JSON.stringify(K))}catch(e){}}
+function say(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+function list(){return V.filter(function(x){return f=="all"||(f=="rev"?!K["v"+x[0]]:x[4]==f)})}
+function setMode(m){mode=m;document.documentElement.dataset.mode=m;render()}
+function setSub(s){sub[mode]=s;qz=null;render()}
+function setF(x){f=x;i=0;flip=false;qz=null;render()}
+function mv(d){var n=list().length;i=(i+d+n)%n;flip=false;render()}
+function mark(v){var x=list()[i];K["v"+x[0]]=v;save();if(f=="rev"&&v){i=Math.max(0,Math.min(i,list().length-1))}else mvq();render()}
+function mvq(){var n=list().length;i=(i+1)%n;flip=false}
+function fl(){flip=!flip;render()}
+function newQ(){var L=list(),x=L[Math.floor(Math.random()*L.length)],o=[x[1]];
+while(o.length<4){var y=V[Math.floor(Math.random()*V.length)][1];if(o.indexOf(y)<0)o.push(y)}
+o.sort(function(){return Math.random()-.5});qz={x:x,o:o,p:null}}
+function pick(n){if(qz.p!==null)return;qz.p=n;sc[1]++;if(qz.o[n]==qz.x[1])sc[0]++;render()}
+function nextQ(){qz=null;render()}
+function tg(n,b){K["q"+n]=!K["q"+n];save();b.textContent=K["q"+n]?"✓ Je sais":"Je sais";b.closest("details").classList.toggle("done");cnt()}
+function cnt(){var n=Q.filter(function(_,k){return K["q"+k]}).length,e=document.getElementById("qc");if(e)e.textContent=n+" / "+Q.length+" questions sues"}
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition,rc=null,merr="",rcn=-1,tk=null,qhl={};
+var QH=["définition simple : machine ou programme, tâches humaines, apprend","McCarthy, Dartmouth, 1955 puis 1956","5 éléments (Copeland) : apprendre, raisonner, problèmes, percevoir, langage","IA forte = copier le cerveau ; IA faible = agir comme un humain ; exemple Deep Blue","une seule tâche, les échecs, des millions de coups","inspiré des humains sans les copier ; il lit, trouve des motifs, donne un pourcentage","apprend avec des données, plus d’exemples, exemple des chiens","3 cercles : IA, machine learning, réseaux de neurones","connaissances et règles humaines ; problèmes : règles écrites à la main, n’apprend pas","pas de règles à la main, méthodes générales, il apprend seul le Go","3 réalisés : langage, complexité, auto-amélioration ; la créativité débute","beaucoup d’IA, chacune bonne dans un seul domaine","plusieurs facettes de l’intelligence + l’effet IA","vidéo de 2016 ; aujourd’hui textes et images ; pas d’IA forte","un juge, par écrit, un humain et une machine, il ne distingue pas"];
+function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=1;j<=b.length;j++)d[0][j]=j;for(i=1;i<=a.length;i++)for(j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]==b[j-1]?0:1));return d[a.length][b.length]}
+function toks(t){return t.toLowerCase().replace(/[^a-z0-9\s]/g," ").split(/\s+/).filter(Boolean)}
+function same(a,b){return a==b||1-lev(a,b)/Math.max(a.length,b.length)>=.7}
+function okSay(heard,term){var h=toks(heard),hj=h.join("");
+return term.replace(/…/g,"").split(/\s*[\/()]\s*/).filter(Boolean).some(function(v){var t=toks(v);if(t.length>1&&t[0]=="to")t.shift();if(!t.length)return false;
+if(hj.indexOf(t.join(""))>=0)return true;
+return t.every(function(w){return h.some(function(x){return same(x,w)})})})}
+function mic(on,done,cont){merr="";if(!SR)return "Reconnaissance vocale indisponible ici. Écris ta réponse (le micro de ton clavier marche aussi).";
+try{if(rc)rc.stop()}catch(e){}
+rc=new SR();rc.lang="en-US";rc.interimResults=true;rc.continuous=!!cont;
+rc.onresult=function(e){var t="";for(var k=0;k<e.results.length;k++)t+=e.results[k][0].transcript+" ";on(t.trim())};
+rc.onerror=function(e){merr=(e.error=="not-allowed"||e.error=="service-not-allowed")?"Micro non autorisé ici. Écris ta réponse (le micro de ton clavier marche aussi).":"Je n’ai rien entendu, réessaie."};
+rc.onend=function(){done()};
+try{rc.start()}catch(e){return "Micro occupé, réessaie."}return ""}
+function newT(){var L=list(),x=L[Math.floor(Math.random()*L.length)];tk={x:x,heard:"",res:null,h:0,msg:"",live:false,show:false}}
+function hintV(x,l){var t=x[0].split(/\s*[\/(]\s*/)[0].replace(/…/g,"").trim(),w=t.split(/\s+/);
+return l==1?"Commence par « "+t.charAt(0)+" », "+w.length+" mot"+(w.length>1?"s":""):l==2?"Début : « "+w[0]+" … »":"Réponse : "+x[0]}
+function talkUI(){if(!tk||list().indexOf(tk.x)<0)newT();var x=tk.x;
+var h='<p class="small">Dis en anglais le mot ou la phrase qui correspond.</p><div class="card" style="min-height:120px;cursor:default"><span class="tag">'+(x[4]=="v"?"Vocabulaire":"À l’oral")+'</span><div class="fr">'+x[1]+'</div><div>'+x[2]+'</div></div>';
+h+='<div class="row"><button class="pri" onclick="tkRec()">'+(tk.live?"🎙 J’écoute…":"🎤 Parler")+'</button><button onclick="tkHint()">💡 Indice</button><button onclick="tkShow()">👁 Voir le mot</button></div>';
+if(tk.h)h+='<p class="en">💡 '+esc(hintV(x,tk.h))+'</p>';
+h+='<input id="tkin" class="in" placeholder="Ou écris ici" value="'+esc(tk.heard)+'" oninput="tk.heard=this.value" onkeydown="if(event.keyCode==13)tkChk()"><div class="row"><button onclick="tkChk()">Valider</button><button onclick="newT();render()">Suivant</button></div>';
+if(tk.show)h+='<div class="res good"><b>'+esc(x[0])+'</b><br>'+esc(x[1])+'<br>'+esc(x[2])+'<br><i>“'+esc(x[3])+'”</i></div>'+spk(esc(x[0]));
+if(tk.msg)h+='<p class="small">'+esc(tk.msg)+'</p>';
+if(tk.res===true)h+='<p class="res good">✅ Bien dit ! <b>'+esc(x[0])+'</b></p>'+spk(esc(x[0]));
+if(tk.res===false)h+='<p class="res bad">❌ J’ai compris : « '+esc(tk.heard)+' ». Réponse attendue : <b>'+esc(x[0])+'</b></p>'+spk(esc(x[0]));
+return h}
+var rs=false;
+function rst(){if(!rs){rs=true;render();setTimeout(function(){if(rs){rs=false;render()}},5000);return}
+Object.keys(K).forEach(function(k){if(k.charAt(0)=="v")delete K[k]});save();rs=false;i=0;flip=false;qz=null;sc=[0,0];render()}
+function tkShow(){tk.show=!tk.show;render()}
+function tkHint(){tk.h=Math.min(3,tk.h+1);render()}
+function tkChk(){var e=document.getElementById("tkin");if(e)tk.heard=e.value;tk.msg="";
+if(!tk.heard.trim()){tk.msg="Dis ou écris quelque chose d’abord.";render();return}
+tk.res=okSay(tk.heard,tk.x[0]);if(tk.res){K["v"+tk.x[0]]=true;save()}render()}
+function tkRec(){tk.res=null;tk.msg="";tk.heard="";
+var m=mic(function(t){tk.heard=t;var e=document.getElementById("tkin");if(e)e.value=t},function(){tk.live=false;if(merr){tk.msg=merr;render()}else tkChk()},false);
+if(m)tk.msg=m;else tk.live=true;render()}
+function talkQ(n){return '<div class="rec"><div class="row" style="margin:0 0 8px"><button class="pri" id="mb'+n+'" onclick="qRec('+n+')">🎤 Dire ma réponse</button><button onclick="qHint('+n+')">💡 Indice</button></div><div id="qh'+n+'"></div><textarea id="qx'+n+'" rows="3" class="in" placeholder="Ta réponse en anglais : parle ou écris"></textarea><div class="row"><button onclick="qChk('+n+')">Analyser ma réponse</button></div><div id="qo'+n+'"></div></div>'}
+function qmsg(n,m){document.getElementById("qo"+n).innerHTML=m?'<p class="small">'+esc(m)+'</p>':""}
+function qHint(n){var l=Math.min(3,(qhl[n]||0)+1);qhl[n]=l;var w=Q[n][2].split(" ").slice(0,4).join(" ");
+var s=l==1?"Idée : "+QH[n]:l==2?"Commence par : “"+w+" …”":"Modèle : "+Q[n][2];
+document.getElementById("qh"+n).innerHTML='<p class="en">💡 '+esc(s)+'</p>'}
+function qRec(n){var t=document.getElementById("qx"+n),b=document.getElementById("mb"+n),base=t.value.trim();
+if(rcn==n&&rc){try{rc.stop()}catch(e){}return}
+var m=mic(function(s){t.value=(base?base+" ":"")+s},function(){rcn=-1;b.textContent="🎤 Dire ma réponse";if(merr)qmsg(n,merr);else if(t.value.trim())qChk(n)},true);
+if(m){qmsg(n,m);return}rcn=n;b.textContent="⏹ Arrêter";qmsg(n,"")}
+function fb(r){var l=function(a){return a.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")};
+return '<div class="score">'+esc(r.score)+' / 10</div>'+(r.good&&r.good.length?'<p class="lab">✅ Bien</p><ul>'+l(r.good)+'</ul>':'')+(r.problems&&r.problems.length?'<p class="lab">⚠️ À corriger</p><ul>'+l(r.problems)+'</ul>':'<p>Aucun problème trouvé.</p>')+(r.better?'<p class="lab">Version corrigée</p><p class="en">'+esc(r.better)+'</p>'+spk(esc(r.better)):'')}
+function loc(t,m){var st=["this","that","with","they","them","their","which","from","does","have","into","also"];
+var w=toks(m).filter(function(x){return x.length>3&&st.indexOf(x)<0}),h=toks(t);
+w=w.filter(function(x,k){return w.indexOf(x)==k});
+var miss=w.filter(function(x){return !h.some(function(y){return same(y,x)})});
+var p=Math.round(10*(1-miss.length/Math.max(w.length,1)));
+return '<div class="score">'+p+' / 10</div><p class="small">Analyse simple (mots-clés du modèle).</p>'+(miss.length?'<p class="lab">⚠️ Mots-clés absents</p><p>'+esc(miss.join(", "))+'</p>':'<p>✅ Tous les mots-clés sont là.</p>')}
+async function qChk(n){var t=document.getElementById("qx"+n).value.trim(),o=document.getElementById("qo"+n);
+if(!t){o.innerHTML='<p class="small">Dis ou écris ta réponse d’abord.</p>';return}
+o.innerHTML='<p class="small">Analyse en cours…</p>';var r=null;
+var p="You are a kind English teacher for a French student (level A2-B1) who prepares a 5-minute oral exam about the video What is Artificial Intelligence Exactly?\nQuestion: "+Q[n][0]+"\nModel answer: "+Q[n][2]+"\nStudent answer (speech-to-text: ignore punctuation, capital letters and tiny recognition errors): "+t+"\nReply ONLY with JSON: {\"score\": integer 0-10 (ideas and language), \"good\": [max 3 short strings in French], \"problems\": [max 4 short strings in French: missing ideas, wrong facts, grammar or vocabulary mistakes, each with the correction], \"better\": \"the student answer corrected, in simple English A2-B1\"}";
+try{var s=await claude.use("sample");if(s)r=await s.json(p)}catch(e){}
+o.innerHTML=(r&&typeof r.score=="number")?fb(r):loc(t,Q[n][2])}
+function chips(){var a=[["all","Tous"],["v","Vidéo"],["o","À l’oral"],["rev","À revoir"]];
+return '<div class="chips">'+a.map(function(c){return '<button class="'+(f==c[0]?"on":"")+'" onclick="setF(\''+c[0]+'\')">'+c[1]+'</button>'}).join("")+'</div>'}
+function spk(t){return '<button class="sp" aria-label="Écouter" onclick="event.stopPropagation();say(this.dataset.s)" data-s="'+t+'">🔊</button>'}
+function render(){
+document.getElementById("t-vocab").className=mode=="vocab"?"on":"";
+document.getElementById("t-video").className=mode=="video"?"on":"";
+var h="",s=sub[mode];
+if(mode=="vocab"){
+var known=V.filter(function(x){return K["v"+x[0]]}).length;
+h+='<div class="sub"><button class="'+(s=="cards"?"on":"")+'" onclick="setSub(\'cards\')">Cartes</button><button class="'+(s=="quiz"?"on":"")+'" onclick="setSub(\'quiz\')">Quiz</button><button class="'+(s=="talk"?"on":"")+'" onclick="setSub(\'talk\')">Parler</button></div>'+chips();
+h+='<div class="bar"><i style="width:'+Math.round(known*100/V.length)+'%"></i></div><p class="small" style="margin:-6px 0 10px">'+known+' / '+V.length+' mots sus</p>'+(known?'<button class="rs" onclick="rst()">'+(rs?"Sûr ? Appuie encore pour tout remettre à 0":"↺ Remettre les mots à 0")+'</button>':'');
+var L=list();
+if(!L.length){h+='<p>Aucun mot dans cette liste. Choisis un autre filtre.</p>'}
+else if(s=="cards"){
+i=Math.min(i,L.length-1);var x=L[i];
+h+='<div class="card" role="button" tabindex="0" onclick="fl()" onkeydown="if(event.key==\'Enter\'||event.key==\' \'){event.preventDefault();fl()}"><span class="tag">'+(x[4]=="v"?"Vocabulaire de la vidéo":"Phrase utile à l’oral")+'</span>';
+if(!flip){h+='<div class="term">'+x[0]+'</div><div style="display:flex;gap:10px;align-items:center">'+spk(x[0])+'<span class="small">Touche la carte pour voir la réponse</span></div>'}
+else{h+='<div class="fr">'+x[1]+'</div><div>'+x[2]+'</div><div class="ex">“'+x[3]+'”</div>'+spk(x[3])}
+h+='</div><p class="small" style="text-align:center">'+(i+1)+' / '+L.length+'</p><div class="row"><button onclick="mv(-1)" aria-label="Précédent">‹</button><button class="no" onclick="mark(false)">À revoir</button><button class="ok" onclick="mark(true)">Je sais</button><button onclick="mv(1)" aria-label="Suivant">›</button></div>'}
+else if(s=="talk"){h+=talkUI()}
+else{
+if(!qz||list().indexOf(qz.x)<0)newQ();
+h+='<p class="small">Score : '+sc[0]+' / '+sc[1]+'. Quelle est la traduction ?</p><div class="card" style="min-height:130px;cursor:default"><div class="term">'+qz.x[0]+'</div>'+spk(qz.x[0])+'</div>';
+qz.o.forEach(function(o,n){var c="opt";if(qz.p!==null){if(o==qz.x[1])c+=" good";else if(n==qz.p)c+=" bad"}
+h+='<button class="'+c+'" onclick="pick('+n+')">'+o+'</button>'});
+if(qz.p!==null)h+='<p class="en">'+qz.x[2]+'. “'+qz.x[3]+'”</p><div class="row"><button class="pri" onclick="nextQ()">Question suivante</button></div>'}
+}else{
+h+='<div class="sub"><button class="'+(s=="sum"?"on":"")+'" onclick="setSub(\'sum\')">Résumé par étapes</button><button class="'+(s=="qa"?"on":"")+'" onclick="setSub(\'qa\')">Questions d’oral</button></div>';
+if(s=="sum"){
+h+='<p class="small">Ouvre chaque étape. La phrase en anglais est le modèle à dire à l’oral.</p>';
+C.forEach(function(c,n){h+='<details'+(n==0?" open":"")+'><summary>'+(n+1)+'. '+c[0]+'</summary><p class="en">'+c[1]+'</p><p>'+spk(c[1])+'</p><ul>'+c[2].map(function(t){return '<li>'+t+'</li>'}).join("")+'</ul></details>'})}
+else{
+h+='<p class="small" id="qc"></p><p class="small">Dis ta réponse à voix haute (🎤) ou écris-la, puis clique sur Analyser. Le bouton 💡 donne des indices.</p>';
+Q.forEach(function(q,n){h+='<details class="'+(K["q"+n]?"done":"")+'"><summary>'+(n+1)+'. '+q[0]+'</summary>'+talkQ(n)+'<details class="mod"><summary>Voir le modèle</summary><p><span class="lab">FR</span> '+q[1]+'</p><p class="en">'+q[2]+'</p></details><div class="row" style="margin:0 0 12px">'+spk(q[2])+'<button onclick="tg('+n+',this)">'+(K["q"+n]?"✓ Je sais":"Je sais")+'</button></div></details>'})}
+}
+document.getElementById("app").innerHTML=h;cnt()}
+render();
+</script>
+</body>
+</html>
