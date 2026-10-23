@@ -221,8 +221,8 @@ var s=l==1?"Idée : "+QH[n]:l==2?"Commence par : “"+w+" …”":"Modèle : "+Q
 document.getElementById("qh"+n).innerHTML='<p class="en">💡 '+esc(s)+'</p>'}
 function qRec(n){var t=document.getElementById("qx"+n),b=document.getElementById("mb"+n),base=t.value.trim();
 if(rcn==n&&rc){try{rc.stop()}catch(e){}return}
-var m=mic(function(s){t.value=(base?base+" ":"")+s},function(){rcn=-1;b.textContent="🎤 Dire ma réponse";if(merr)qmsg(n,merr);else if(t.value.trim())qChk(n)},true);
-if(m){qmsg(n,m);return}rcn=n;b.textContent="⏹ Arrêter";qmsg(n,"")}
+var m=mic(function(s){t.value=(base?base+" ":"")+s},function(){rcn=-1;b.textContent="🎤 Dire ma réponse";if(merr)qmsg(n,merr);else if(t.value.trim())qmsg(n,"Transcription terminée. Relis ce qui est écrit et corrige les erreurs avant de cliquer sur « Analyser ma réponse ».")},true);
+if(m){qmsg(n,m);return}rcn=n;b.textContent="⏹ Arrêter";qmsg(n,"Parle naturellement, puis appuie sur « Arrêter ». Vérifie la transcription avant l’analyse.")}
 function fb(r){var l=function(a){return a.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")};
 return '<div class="score">'+esc(r.score)+' / 10</div>'+(r.good&&r.good.length?'<p class="lab">✅ Bien</p><ul>'+l(r.good)+'</ul>':'')+(r.problems&&r.problems.length?'<p class="lab">⚠️ À corriger</p><ul>'+l(r.problems)+'</ul>':'<p>Aucun problème trouvé.</p>')+(r.better?'<p class="lab">Version corrigée</p><p class="en">'+esc(r.better)+'</p>'+spk(esc(r.better)):'')}
 function loc(t,m){var st=["this","that","with","they","them","their","which","from","does","have","into","also"];
@@ -234,7 +234,7 @@ return '<div class="score">'+p+' / 10</div><p class="small">Analyse simple (mots
 async function qChk(n){var t=document.getElementById("qx"+n).value.trim(),o=document.getElementById("qo"+n);
 if(!t){o.innerHTML='<p class="small">Dis ou écris ta réponse d’abord.</p>';return}
 o.innerHTML='<p class="small">Analyse en cours…</p>';var r=null;
-var p="You are a kind English teacher for a French student (level A2-B1) who prepares a 5-minute oral exam about the video What is Artificial Intelligence Exactly?\nQuestion: "+Q[n][0]+"\nModel answer: "+Q[n][2]+"\nStudent answer (speech-to-text: ignore punctuation, capital letters and tiny recognition errors): "+t+"\nReply ONLY with JSON: {\"score\": integer 0-10 (ideas and language), \"good\": [max 3 short strings in French], \"problems\": [max 4 short strings in French: missing ideas, wrong facts, grammar or vocabulary mistakes, each with the correction], \"better\": \"the student answer corrected, in simple English A2-B1\"}";
+var p="You are a kind English teacher for a French student (level A2-B1) who prepares a 5-minute oral exam about the video What is Artificial Intelligence Exactly?\nQuestion: "+Q[n][0]+"\nModel answer: "+Q[n][2]+"\nStudent answer (speech-to-text): "+t+"\nBe strict and fair: judge only what the student actually said and whether it answers the question. Do NOT assume missing ideas or give credit for unrelated words. If the answer is unrelated, incoherent, or likely badly transcribed, give a low score and say in French that the transcription may be wrong; do not invent what the student meant. A short but relevant answer can get partial credit, but never a high score if essential ideas are missing.\nReply ONLY with JSON: {\"score\": integer 0-10 (ideas and language), \"good\": [max 3 short strings in French], \"problems\": [max 4 short strings in French: missing ideas, wrong facts, grammar or vocabulary mistakes, each with the correction], \"better\": \"the student answer corrected, in simple English A2-B1\"}";
 try{var s=await claude.use("sample");if(s)r=await s.json(p)}catch(e){}
 o.innerHTML=(r&&typeof r.score=="number")?fb(r):loc(t,Q[n][2])}
 function chips(){var a=[["all","Tous"],["v","Vidéo"],["o","À l’oral"],["rev","À revoir"]];
