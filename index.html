@@ -185,10 +185,11 @@ if(hj.indexOf(t.join(""))>=0)return true;
 return t.every(function(w){return h.some(function(x){return same(x,w)})})})}
 function mic(on,done,cont){merr="";if(!SR)return "Reconnaissance vocale indisponible ici. Écris ta réponse (le micro de ton clavier marche aussi).";
 try{if(rc)rc.stop()}catch(e){}
-var finalText="";rc=new SR();rc.lang="en-US";rc.interimResults=true;rc.continuous=!!cont;rc.maxAlternatives=3;
-rc.onresult=function(e){var interim="";for(var k=e.resultIndex;k<e.results.length;k++){var part=e.results[k][0].transcript.trim();if(e.results[k].isFinal){if(part&&finalText.indexOf(part)<0)finalText+=(finalText?" ":"")+part}else if(part)interim+=(interim?" ":"")+part}on((finalText+(interim?" "+interim:"")).trim())};
+var finalParts=[],lastInterim="",sessionEnded=false;rc=new SR();rc.lang="en-US";rc.interimResults=true;rc.continuous=!!cont;rc.maxAlternatives=1;
+rc.onresult=function(e){var interim="";for(var k=e.resultIndex;k<e.results.length;k++){var result=e.results[k],part=(result[0].transcript||"").trim();if(!part)continue;if(result.isFinal){finalParts[k]=part;if(k===e.resultIndex)lastInterim=""}else interim=part}
+var finals=finalParts.filter(Boolean).join(" ").trim();lastInterim=interim;on((finals+(interim?" "+interim:"")).trim())};
 rc.onerror=function(e){if(e.error=="not-allowed"||e.error=="service-not-allowed")merr="Micro non autorisé. Vérifie les permissions du navigateur, puis réessaie.";else if(e.error=="audio-capture")merr="Aucun micro détecté. Vérifie ton micro ou utilise la saisie au clavier.";else if(e.error=="no-speech")merr="Aucune parole détectée. Parle un peu plus fort et réessaie.";else if(e.error=="network")merr="La reconnaissance vocale a un problème de réseau. Réessaie ou écris ta réponse.";else if(e.error!="aborted")merr="Problème de reconnaissance vocale ("+e.error+"). Réessaie."};
-rc.onend=function(){if(finalText)on(finalText.trim());done()};
+rc.onend=function(){if(sessionEnded)return;sessionEnded=true;var text=finalParts.filter(Boolean).join(" ").trim();if(text)on(text);done()};
 try{rc.start()}catch(e){return "Micro occupé, réessaie."}return ""}
 function newT(){var L=list(),x=L[Math.floor(Math.random()*L.length)];tk={x:x,heard:"",res:null,h:0,msg:"",live:false,show:false}}
 function hintV(x,l){var t=x[0].split(/\s*[\/(]\s*/)[0].replace(/…/g,"").trim(),w=t.split(/\s+/);
