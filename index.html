@@ -224,10 +224,10 @@ function newT(){var L=list(),x=L[Math.floor(Math.random()*L.length)];tk={x:x,hea
 function hintV(x,l){var t=x[0].split(/\s*[\/(]\s*/)[0].replace(/…/g,"").trim(),w=t.split(/\s+/);
 return l==1?"Commence par « "+t.charAt(0)+" », "+w.length+" mot"+(w.length>1?"s":""):l==2?"Début : « "+w[0]+" … »":"Réponse : "+x[0]}
 function talkUI(){if(!tk||list().indexOf(tk.x)<0)newT();var x=tk.x;
-var h='<p class="small">Dis en anglais le mot ou la phrase qui correspond.</p><div class="card" style="min-height:120px;cursor:default"><span class="tag">'+(x[4]=="v"?"Vocabulaire":"À l’oral")+'</span><div class="fr">'+x[1]+'</div><div>'+x[2]+'</div></div>';
-h+='<div class="row"><button class="pri" onclick="tkRec()">'+(tk.live?"🎙 J’écoute…":"🎤 Parler")+'</button><button onclick="tkHint()">💡 Indice</button><button onclick="tkShow()">👁 Voir le mot</button></div>';
+var h='<p class="small">'+tr("Dis en anglais le mot ou la phrase qui correspond.","Say the matching word or phrase in English.")+'</p><div class="card" style="min-height:120px;cursor:default"><span class="tag">'+(x[4]=="v"?tr("Vocabulaire","Vocabulary"):tr("À l’oral","Useful oral phrase"))+'</span><div class="fr">'+x[1]+'</div><div>'+x[2]+'</div></div>';
+h+='<div class="row"><button class="pri" onclick="tkRec()">'+(tk.live?tr("🎙 J’écoute…","🎙 Listening…"):tr("🎤 Parler","🎤 Speak"))+'</button><button onclick="tkHint()">'+tr("💡 Indice","💡 Hint")+'</button><button onclick="tkShow()">👁 '+tr("Voir le mot","Show answer")+'</button></div>';
 if(tk.h)h+='<p class="en">💡 '+esc(hintV(x,tk.h))+'</p>';
-h+='<input id="tkin" class="in" placeholder="Ou écris ici" value="'+esc(tk.heard)+'" oninput="tk.heard=this.value" onkeydown="if(event.keyCode==13)tkChk()"><div class="row"><button onclick="tkChk()">Valider</button><button onclick="newT();render()">Suivant</button></div>';
+h+='<input id="tkin" class="in" placeholder="'+tr("Ou écris ici","Or type here")+'" value="'+esc(tk.heard)+'" oninput="tk.heard=this.value" onkeydown="if(event.keyCode==13)tkChk()"><div class="row"><button onclick="tkChk()">'+tr("Valider","Check answer")+'</button><button onclick="newT();render()">'+tr("Suivant","Next")+'</button></div>';
 if(tk.show)h+='<div class="res good"><b>'+esc(x[0])+'</b><br>'+esc(x[1])+'<br>'+esc(x[2])+'<br><i>“'+esc(x[3])+'”</i></div>'+spk(esc(x[0]));
 if(tk.msg)h+='<p class="small">'+esc(tk.msg)+'</p>';
 if(tk.res===true)h+='<p class="res good">✅ Bien dit ! <b>'+esc(x[0])+'</b></p>'+spk(esc(x[0]));
@@ -290,7 +290,7 @@ h+='</div><p class="small" style="text-align:center">'+(i+1)+' / '+L.length+'</p
 else if(s=="talk"){h+=talkUI()}
 else{
 if(!qz||list().indexOf(qz.x)<0)newQ();
-h+='<p class="small">Score : '+sc[0]+' / '+sc[1]+'. Quelle est la traduction ?</p><div class="card" style="min-height:130px;cursor:default"><div class="term">'+qz.x[0]+'</div>'+spk(qz.x[0])+'</div>';
+h+='<p class="small">'+tr("Score : ","Score: ")+sc[0]+' / '+sc[1]+'. '+tr("Quelle est la traduction ?","What is the translation?")+'</p><div class="card" style="min-height:130px;cursor:default"><div class="term">'+qz.x[0]+'</div>'+spk(qz.x[0])+'</div>';
 qz.o.forEach(function(o,n){var c="opt";if(qz.p!==null){if(o==qz.x[1])c+=" good";else if(n==qz.p)c+=" bad"}
 h+='<button class="'+c+'" onclick="pick('+n+')">'+o+'</button>'});
 if(qz.p!==null)h+='<p class="en">'+qz.x[2]+'. “'+qz.x[3]+'”</p><div class="row"><button class="pri" onclick="nextQ()">Question suivante</button></div>'}
@@ -303,7 +303,7 @@ else if(s=="research"){
 h+='<p class="small">'+tr("Fiches de recherche : lis l’explication en français, apprends la phrase anglaise et ouvre les sources pour approfondir les notions importantes.","Research cards: read the explanations, learn the key phrases and open the sources to explore important concepts.")+'</p><p class="small">'+tr("Ouvre une notion : les trois parties sont regroupées dans la même fiche, mais clairement séparées.","Open a concept: all three parts are grouped in the same card, but clearly separated.")+'</p>';
 R.forEach(function(c,n){var e=REN[n]||[];h+='<details><summary>'+(videoLang=="en"?(["History and definition","Types of intelligence","Strong AI and weak AI","Machine learning and neural networks","Watson and confidence scores","Expert systems","AlphaGo","The seven historical goals","AI applications","The Turing test and the AI effect"][n]||c[0]):c[0])+'</summary><section class="notion-part"><p class="lab">'+tr("1. Ce qui est dit dans la vidéo","1. What the video says")+'</p><p>'+(videoLang=="en"?(e[0]||c[1]):c[1])+'</p></section><section class="notion-part"><p class="lab">'+tr("2. Recherche et explications complémentaires","2. Research and further explanations")+'</p><p class="'+(videoLang=="en"?"en":"")+'">'+(videoLang=="en"?(e[1]||c[2]):c[2])+'</p></section><section class="notion-part"><p class="lab">'+tr("3. À retenir pour l’oral","3. What to remember for the oral exam")+'</p><p>'+(videoLang=="en"?(e[2]||c[3]):c[3])+'</p><p class="small"><b>'+tr("Sources :","Sources:")+'</b> '+c[4]+'</p></section></details>'})}
 else{
-h+='<p class="small" id="qc"></p><p class="small">Dis ta réponse à voix haute (🎤) ou écris-la, puis clique sur Analyser. Le bouton 💡 donne des indices.</p>';
+h+='<p class="small" id="qc"></p><p class="small">'+tr("Dis ta réponse à voix haute (🎤) ou écris-la, puis clique sur Analyser. Le bouton 💡 donne des indices.","Answer aloud (🎤) or type your answer, then click Analyze. The 💡 button gives you hints.")+'</p>';
 Q.forEach(function(q,n){h+='<details class="'+(K["q"+n]?"done":"")+'"><summary>'+(n+1)+'. '+(videoLang=="en"?q[0]:QFR[n])+'</summary>'+talkQ(n)+'<details class="mod"><summary>'+tr("Voir le modèle","Show model")+'</summary>'+(videoLang=="fr"?'<p><span class="lab">FR</span> '+q[1]+'</p>':'')+'<p class="en">'+q[2]+'</p></details><div class="row" style="margin:0 0 12px">'+spk(q[2])+'<button onclick="tg('+n+',this)">'+(K["q"+n]?tr("✓ Je sais","✓ I know this"):tr("Je sais","I know this"))+'</button></div></details>'})}
 }
 document.getElementById("app").innerHTML=h;cnt()}
