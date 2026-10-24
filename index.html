@@ -154,7 +154,7 @@ var Q=[
 ["Is the video still up to date?","Idées principales vraies, mais vidéo de 2016. Aujourd’hui l’IA écrit et crée des images, mais pas d’IA forte.","The main ideas are true, but the video is from 2016. Today AI writes texts and makes images, but we still have no strong AI."],
 ["What is the Turing test?","Un juge discute par écrit avec un humain et une machine. S’il ne distingue pas la machine, elle réussit.","A judge talks in writing with a human and a machine. If the judge cannot tell which one is the machine, it passes the test."]
 ];
-var K={},mode="vocab",sub={vocab:"cards",video:"sum"},f="all",i=0,flip=false,qz=null,sc=[0,0];
+var K={},mode="vocab",sub={vocab:"cards",video:"sum"},f="all",i=0,flip=false,qz=null,sc=[0,0],showSummaryModel=false;
 try{K=JSON.parse(localStorage.getItem("oralia")||"{}")}catch(e){}
 function save(){try{localStorage.setItem("oralia",JSON.stringify(K))}catch(e){}}
 function say(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
@@ -265,10 +265,10 @@ qz.o.forEach(function(o,n){var c="opt";if(qz.p!==null){if(o==qz.x[1])c+=" good";
 h+='<button class="'+c+'" onclick="pick('+n+')">'+o+'</button>'});
 if(qz.p!==null)h+='<p class="en">'+qz.x[2]+'. “'+qz.x[3]+'”</p><div class="row"><button class="pri" onclick="nextQ()">Question suivante</button></div>'}
 }else{
-h+='<div class="sub"><button class="'+(s=="sum"?"on":"")+'" onclick="setSub(\'sum\')">Résumé par étapes</button><button class="'+(s=="qa"?"on":"")+'" onclick="setSub(\'qa\')">Questions d’oral</button></div>';
+h+='<div class="sub"><button class="'+(s=="sum"?"on":"")+'" onclick="setSub(\'sum\')">Résumé : mots-clés</button><button class="'+(s=="qa"?"on":"")+'" onclick="setSub(\'qa\')">Questions d’oral</button><button class="'+(s=="research"?"on":"")+'" onclick="setSub(\'research\')">Notions & recherches</button></div>';
 if(s=="sum"){
-h+='<p class="small">Ouvre chaque étape. La phrase en anglais est le modèle à dire à l’oral.</p>';
-C.forEach(function(c,n){h+='<details'+(n==0?" open":"")+'><summary>'+(n+1)+'. '+c[0]+'</summary><p class="en">'+c[1]+'</p><p>'+spk(c[1])+'</p><ul>'+c[2].map(function(t){return '<li>'+t+'</li>'}).join("")+'</ul></details>'})}
+h+='<p class="small">Construis ton résumé avec les mots-clés. Essaie de parler sans lire un texte complet, puis affiche le modèle pour comparer.</p><button class="pri" onclick="showSummaryModel=!showSummaryModel;render()">'+(showSummaryModel?"Masquer le modèle":"💡 Voir un exemple de résumé")+'</button>';
+C.forEach(function(c,n){h+='<details'+(n==0?" open":"")+'><summary>'+(n+1)+'. '+c[0]+'</summary><ul>'+c[2].map(function(t){return '<li>'+t+'</li>'}).join("")+'</ul>'+(showSummaryModel?'<p class="lab">Exemple en anglais</p><p class="en">'+c[1]+'</p><p>'+spk(c[1])+'</p>':'')+'</details>'})}
 else{
 h+='<p class="small" id="qc"></p><p class="small">Dis ta réponse à voix haute (🎤) ou écris-la, puis clique sur Analyser. Le bouton 💡 donne des indices.</p>';
 Q.forEach(function(q,n){h+='<details class="'+(K["q"+n]?"done":"")+'"><summary>'+(n+1)+'. '+q[0]+'</summary>'+talkQ(n)+'<details class="mod"><summary>Voir le modèle</summary><p><span class="lab">FR</span> '+q[1]+'</p><p class="en">'+q[2]+'</p></details><div class="row" style="margin:0 0 12px">'+spk(q[2])+'<button onclick="tg('+n+',this)">'+(K["q"+n]?"✓ Je sais":"Je sais")+'</button></div></details>'})}
