@@ -166,7 +166,7 @@ var Q=[
 ["Is the video still up to date?","Idées principales vraies, mais vidéo de 2016. Aujourd’hui l’IA écrit et crée des images, mais pas d’IA forte.","The main ideas are true, but the video is from 2016. Today AI writes texts and makes images, but we still have no strong AI."],
 ["What is the Turing test?","Un juge discute par écrit avec un humain et une machine. S’il ne distingue pas la machine, elle réussit.","A judge talks in writing with a human and a machine. If the judge cannot tell which one is the machine, it passes the test."]
 ];
-var K={},mode="vocab",sub={vocab:"cards",video:"sum"},f="all",i=0,flip=false,qz=null,sc=[0,0],showSummaryModel=false;
+var K={},mode="vocab",sub={vocab:"cards",video:"sum"},f="all",i=0,flip=false,qz=null,sc=[0,0],showSummaryModel=false,vocabDirection="enfr",researchView="both";
 try{K=JSON.parse(localStorage.getItem("oralia")||"{}")}catch(e){}
 function save(){try{localStorage.setItem("oralia",JSON.stringify(K))}catch(e){}}
 function say(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
@@ -177,7 +177,7 @@ function setF(x){f=x;i=0;flip=false;qz=null;render()}
 function mv(d){var n=list().length;i=(i+d+n)%n;flip=false;render()}
 function mark(v){var x=list()[i];K["v"+x[0]]=v;save();if(f=="rev"&&v){i=Math.max(0,Math.min(i,list().length-1))}else mvq();render()}
 function mvq(){var n=list().length;i=(i+1)%n;flip=false}
-function fl(){flip=!flip;render()}
+function fl(){if(vocabDirection=="mix"&&!flip)K["mixdir"]=Math.random()<.5?"enfr":"fren";flip=!flip;render()}
 function newQ(){var L=list(),x=L[Math.floor(Math.random()*L.length)],o=[x[1]];
 while(o.length<4){var y=V[Math.floor(Math.random()*V.length)][1];if(o.indexOf(y)<0)o.push(y)}
 o.sort(function(){return Math.random()-.5});qz={x:x,o:o,p:null}}
@@ -259,15 +259,16 @@ document.getElementById("t-video").className=mode=="video"?"on":"";
 var h="",s=sub[mode];
 if(mode=="vocab"){
 var known=V.filter(function(x){return K["v"+x[0]]}).length;
-h+='<div class="sub"><button class="'+(s=="cards"?"on":"")+'" onclick="setSub(\'cards\')">Cartes</button><button class="'+(s=="quiz"?"on":"")+'" onclick="setSub(\'quiz\')">Quiz</button><button class="'+(s=="talk"?"on":"")+'" onclick="setSub(\'talk\')">Parler</button></div>'+chips();
+h+='<div class="sub"><button class="'+(s=="cards"?"on":"")+'" onclick="setSub(\'cards\')">Cartes</button><button class="'+(s=="quiz"?"on":"")+'" onclick="setSub(\'quiz\')">Quiz</button><button class="'+(s=="talk"?"on":"")+'" onclick="setSub(\'talk\')">Parler</button></div><p class="small">Sens des cartes</p><div class="sub"><button class="'+(vocabDirection=="enfr"?"on":"")+'" onclick="vocabDirection=\'enfr\';flip=false;render()">Anglais → français</button><button class="'+(vocabDirection=="fren"?"on":"")+'" onclick="vocabDirection=\'fren\';flip=false;render()">Français → anglais</button><button class="'+(vocabDirection=="mix"?"on":"")+'" onclick="vocabDirection=\'mix\';flip=false;render()">Mélangé</button></div>'+chips();
 h+='<div class="bar"><i style="width:'+Math.round(known*100/V.length)+'%"></i></div><p class="small" style="margin:-6px 0 10px">'+known+' / '+V.length+' mots sus</p>'+(known?'<button class="rs" onclick="rst()">'+(rs?"Sûr ? Appuie encore pour tout remettre à 0":"↺ Remettre les mots à 0")+'</button>':'');
 var L=list();
 if(!L.length){h+='<p>Aucun mot dans cette liste. Choisis un autre filtre.</p>'}
 else if(s=="cards"){
 i=Math.min(i,L.length-1);var x=L[i];
 h+='<div class="card" role="button" tabindex="0" onclick="fl()" onkeydown="if(event.key==\'Enter\'||event.key==\' \'){event.preventDefault();fl()}"><span class="tag">'+(x[4]=="v"?"Vocabulaire de la vidéo":"Phrase utile à l’oral")+'</span>';
-if(!flip){h+='<div class="term">'+x[0]+'</div><div style="display:flex;gap:10px;align-items:center">'+spk(x[0])+'<span class="small">Touche la carte pour voir la réponse</span></div>'}
-else{h+='<div class="fr">'+x[1]+'</div><div>'+x[2]+'</div><div class="ex">“'+x[3]+'”</div>'+spk(x[3])}
+var direction=vocabDirection=="mix"?(K["mixdir"]||"enfr") : vocabDirection;
+if(!flip){h+='<div class="term">'+(direction=="enfr"?x[0]:x[1])+'</div><div style="display:flex;gap:10px;align-items:center">'+spk(direction=="enfr"?x[0]:x[1])+'<span class="small">Touche la carte pour voir la réponse</span></div>'}
+else{h+='<div class="fr">'+(direction=="enfr"?x[1]:x[0])+'</div><div>'+x[2]+'</div><div class="ex">“'+x[3]+'”</div>'+spk(x[3])}
 h+='</div><p class="small" style="text-align:center">'+(i+1)+' / '+L.length+'</p><div class="row"><button onclick="mv(-1)" aria-label="Précédent">‹</button><button class="no" onclick="mark(false)">À revoir</button><button class="ok" onclick="mark(true)">Je sais</button><button onclick="mv(1)" aria-label="Suivant">›</button></div>'}
 else if(s=="talk"){h+=talkUI()}
 else{
@@ -283,7 +284,8 @@ h+='<p class="small">Construis ton résumé avec les mots-clés. Essaie de parle
 C.forEach(function(c,n){h+='<details'+(n==0?" open":"")+'><summary>'+(n+1)+'. '+c[0]+'</summary><ul>'+c[2].map(function(t){return '<li>'+t+'</li>'}).join("")+'</ul>'+(showSummaryModel?'<p class="lab">Exemple en anglais</p><p class="en">'+c[1]+'</p><p>'+spk(c[1])+'</p>':'')+'</details>'})}
 else if(s=="research"){
 h+='<p class="small">Fiches de recherche : lis l’explication en français, apprends la phrase anglaise et ouvre les sources pour approfondir les notions importantes.</p>';
-R.forEach(function(c,n){h+='<details'+(n==0?" open":"")+'><summary>'+c[0]+'</summary><p><span class="lab">Explication en français</span><br>'+c[1]+'</p><p class="en">'+c[2]+'</p><p class="small"><b>À retenir :</b> '+c[3]+'</p><p class="small"><b>Sources :</b> '+c[4]+'</p></details>'})}
+h+='<p class="small">Choisis si tu veux voir les informations de la vidéo, les recherches complémentaires ou les deux.</p><div class="sub"><button class="'+(researchView=="video"?"on":"")+'" onclick="researchView=\'video\';render()">Dans la vidéo</button><button class="'+(researchView=="research"?"on":"")+'" onclick="researchView=\'research\';render()">Recherches & explications</button><button class="'+(researchView=="both"?"on":"")+'" onclick="researchView=\'both\';render()">Les deux</button></div>';
+R.forEach(function(c,n){h+='<details'+(n==0?" open":"")+'><summary>'+c[0]+'</summary>'+(researchView!="research"?'<p class="lab">Ce qui est dit dans la vidéo</p><p>'+c[1]+'</p>':'')+(researchView!="video"?'<p class="lab">Recherches et explications complémentaires</p><p class="en">'+c[2]+'</p><p class="small"><b>À retenir :</b> '+c[3]+'</p><p class="small"><b>Sources :</b> '+c[4]+'</p>':'')+'</details>'})}
 else{
 h+='<p class="small" id="qc"></p><p class="small">Dis ta réponse à voix haute (🎤) ou écris-la, puis clique sur Analyser. Le bouton 💡 donne des indices.</p>';
 Q.forEach(function(q,n){h+='<details class="'+(K["q"+n]?"done":"")+'"><summary>'+(n+1)+'. '+q[0]+'</summary>'+talkQ(n)+'<details class="mod"><summary>Voir le modèle</summary><p><span class="lab">FR</span> '+q[1]+'</p><p class="en">'+q[2]+'</p></details><div class="row" style="margin:0 0 12px">'+spk(q[2])+'<button onclick="tg('+n+',this)">'+(K["q"+n]?"✓ Je sais":"Je sais")+'</button></div></details>'})}
