@@ -191,8 +191,8 @@ var translationCache={};
 function translateRenderedContent(){
 var root=document.getElementById("app");if(!root||mode!=="video"||videoLang!=="en")return;
 var nodes=[],walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),node;
-while((node=walker.nextNode())){var t=node.nodeValue.trim();if(t&&/[\\u00C0-\\u024F]/.test(t)&&!node.parentElement.closest("script,style"))nodes.push({node:node,original:node.nodeValue});}
-var attrs=[];root.querySelectorAll("[data-s]").forEach(function(el){var t=el.getAttribute("data-s");if(t&&/[\\u00C0-\\u024F]/.test(t))attrs.push({el:el,original:t});});
+while((node=walker.nextNode())){var t=node.nodeValue.trim();if(t&&/[A-Za-zÀ-ÿ]{2}/.test(t)&&!node.parentElement.closest("script,style"))nodes.push({node:node,original:node.nodeValue});}
+var attrs=[];root.querySelectorAll("[data-s]").forEach(function(el){var t=el.getAttribute("data-s");if(t&&/[A-Za-zÀ-ÿ]{2}/.test(t))attrs.push({el:el,original:t});});
 function translate(text){
 if(translationCache[text])return Promise.resolve(translationCache[text]);
 return fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q="+encodeURIComponent(text))
