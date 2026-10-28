@@ -187,6 +187,23 @@ function list(){return V.filter(function(x){return f=="all"||(f=="rev"?!K["v"+x[
 function setMode(m){mode=m;document.documentElement.dataset.mode=m;render()}
 function setVideoLang(l){videoLang=l;render()}
 function tr(fr,en){return videoLang==="en"?(en||fr):fr}
+var translationCache={};
+function translateRenderedContent(){
+var root=document.getElementById("app");if(!root||mode!=="video"||videoLang!=="en")return;
+var nodes=[],walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),node;
+while((node=walker.nextNode())){var t=node.nodeValue.trim();if(t&&/[\\u00C0-\\u024F]/.test(t)&&!node.parentElement.closest("script,style"))nodes.push({node:node,original:node.nodeValue});}
+var attrs=[];root.querySelectorAll("[data-s]").forEach(function(el){var t=el.getAttribute("data-s");if(t&&/[\\u00C0-\\u024F]/.test(t))attrs.push({el:el,original:t});});
+function translate(text){
+if(translationCache[text])return Promise.resolve(translationCache[text]);
+return fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q="+encodeURIComponent(text))
+.then(function(r){if(!r.ok)throw new Error("Translation unavailable");return r.json()})
+.then(function(data){var out=(data[0]||[]).map(function(x){return x[0]||""}).join("");if(out){translationCache[text]=out;return out}return text})
+.catch(function(){return text});
+}
+var jobs=nodes.map(function(item){return translate(item.original).then(function(out){if(mode==="video"&&videoLang==="en"&&item.node.isConnected)item.node.nodeValue=item.original.replace(item.original.trim(),out)})});
+attrs.forEach(function(item){jobs.push(translate(item.original).then(function(out){if(mode==="video"&&videoLang==="en"&&item.el.isConnected)item.el.setAttribute("data-s",out)}))});
+Promise.all(jobs).then(function(){if(mode==="video"&&videoLang==="en"&&!root.querySelector("[data-translation-note]")){var note=document.createElement("p");note.className="small";note.setAttribute("data-translation-note","true");note.textContent="English translation is generated automatically and may contain mistakes.";root.appendChild(note)}})
+}
 function keyTerms(t){var x=esc(t);var terms=["artificial intelligence","intelligence artificielle","IA forte","IA faible","strong AI","weak AI","machine learning","apprentissage automatique","neural networks","réseaux de neurones","Deep Blue","IBM Watson","Watson","DeepMind","AlphaGo","expert system","système expert","Turing test","test de Turing","Alan Turing","John McCarthy","Dartmouth","singularity","singularité","brain uploading","Stuxnet","Asimov","robotics","robotique","data","données","reasoning","raisonnement","problem solving","résolution de problèmes","creativity","créativité"];terms.sort(function(a,b){return b.length-a.length});terms.forEach(function(term){var re=new RegExp(term,"gi");x=x.replace(re,function(m){return '<strong class="keyterm">'+m+'</strong>'})});return x;}
 var CEN=["The beginning: Dartmouth (1955–1956)","The early AI goals","Main fields of AI","What is intelligence?","Strong AI, weak AI and the middle ground","Machine learning and neural networks","Expert systems vs AlphaGo","Conclusion and limitations"];
 var QFR=["Que signifie l’IA selon la vidéo ?","Qui a créé le terme IA, et quand ?","Quels sont les principaux éléments de l’intelligence ?","Quelle est la différence entre IA forte et IA faible ?","Pourquoi Deep Blue est-il une IA faible ?","Pourquoi Watson est-il « entre les deux » ?","Qu’est-ce que l’apprentissage automatique ? Donne un exemple.","Quel est le lien entre IA, apprentissage automatique et réseaux de neurones ?","Qu’est-ce qu’un système expert et quels sont ses problèmes ?","En quoi AlphaGo est-il différent d’un système expert ?","Lesquels des sept objectifs étaient atteints en 2016 ?","Quelle est la conclusion de la vidéo ?","Pourquoi est-il difficile de définir l’IA ?","La vidéo est-elle toujours à jour ?","Qu’est-ce que le test de Turing ?","Quels sont les principaux domaines de l’IA ?","Quels étaient les premiers objectifs de l’IA et où en était-on en 2016 ?","Que s’est-il passé en 1997, 2011 et 2016 ?","Qu’est-ce que MYCIN et en quoi diffère-t-il d’AlphaGo ?","Quelles sont les critiques du test de Turing ?","Pourquoi faut-il nuancer l’idée qu’AlphaGo était le premier système non expert ?"];
@@ -395,7 +412,7 @@ if(qz.p!==null)h+='<p class="en">'+qz.x[2]+'. “'+qz.x[3]+'”</p><div class="r
 }else{
 h+=videoDisplay();
 }
-document.getElementById("app").innerHTML=h;cnt()}
+document.getElementById("app").innerHTML=h;cnt();if(mode==="video"&&videoLang==="en")translateRenderedContent()}
 render();
 </script>
 <script>
